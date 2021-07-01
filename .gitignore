@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Phenotype files
+.pheno
+
+# Mac
+.DS_Store
+
+# Backup files
+*#
+*~
