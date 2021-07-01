@@ -1,4 +1,3 @@
-from typing import DefaultDict
 import numpy as np
 import argparse
 import re
@@ -148,9 +147,5 @@ if __name__ == "__main__":
 
     print("Extracting phenotypes...")
     extract_phenotypes(ID_list, output_fname, combine, combine_op, chunksize, pheno_dir, target_dir, exclude_file, debug)
-
-    # test commands (reads ukb*.csv in test directory)
-    # python3 extract_pheno.py 21 31 34 44 45 50 72 -n comb -c -r 100 -d tests -e tests/test_exclude.csv -v
-    # python3 extract_pheno.py 31-0.0 34-0.0 44-0.0 50-0.0 50-1.0 50-2.0 -n nocom -r 100 -d tests -e tests/test_exclude.csv -v
 
 
