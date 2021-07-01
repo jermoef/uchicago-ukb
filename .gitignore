@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # Phenotype files
-.pheno
+*.pheno
 
 # Mac
 .DS_Store
@@ -137,3 +137,6 @@ dmypy.json
 # Backup files
 *#
 *~
+
+# vs code
+*.code-workspace
