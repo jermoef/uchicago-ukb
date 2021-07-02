@@ -71,7 +71,7 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
             print("Included cols: ", included_cols)
         
         if len(included_cols) > 0:
-            usecols = lambda x: x == "eid" or any(field_id in x for field_id in included_cols)
+            usecols = lambda x: x == "eid" or any(x.split('-')[0] == field_id for field_id in included_cols)
             # with read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid") as reader: # <- requires pandas version >=1.2
             is_header = 1
             mode = 'w'
