@@ -3,6 +3,7 @@
 - [Phenotype Extraction](#phenotype-extraction)
   * [Command Line Arguments](#command-line-arguments)
   * [Sample Calls](#sample-calls)
+  * [Possible Errors](#possible-errors)
 
 
 ### Phenotype Extraction
@@ -31,3 +32,6 @@ Run `python3 extract_pheno.py -h` to see options.
 Looks for and outputs files in `./tests/` directory
 - `python3 extract_pheno.py 21 31 34 44 45 50 72 -n comb -c -r 100 -d tests -e tests/test_exclude.csv -t tests`
 - `python3 extract_pheno.py 31-0.0 34-0.0 44-0.0 50-0.0 50-1.0 50-2.0 -n nocomb -r 100 -d tests -e tests/test_exclude.csv -t tests`
+
+#### Possible Errors
+- `AttributeError: __enter__` on `with read_csv...`. Check that your pandas installation is version >= 1.2 (script relies on read_csv w/ chunksize returning a context maanger)
