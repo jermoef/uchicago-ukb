@@ -1,13 +1,10 @@
 import numpy as np
 import argparse
-import re
+import consts
 from pandas import read_csv
 from glob import glob
 from os import stat, getenv, path, makedirs
-from dotenv import load_dotenv
 from sys import argv, stderr, exit
-
-load_dotenv()
 
 def get_header(filename, combine):
     """Gets header from csv file"""
@@ -42,10 +39,10 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
     """
 
     # grab files matching ukb*.csv for IDs in order of largest dataset ID to smallest e.g. ukb27702.csv is searched before ukb27701.csv
-    pheno_dir = path.join(path.abspath(pheno_dir), '') + 'ukb*.csv' if pheno_dir else path.expanduser(getenv('PHENO_PATH') + 'ukb*.csv')
+    pheno_dir = path.join(path.abspath(pheno_dir), '') + 'ukb*.csv' if pheno_dir else path.expanduser(consts.PHENO_PATH + 'ukb*.csv')
     file_list = sorted(glob(pheno_dir), key=lambda x: int(get_dataset_id(x)), reverse=True)
     # grab list of UKB participants who have withdrawn and should be excluded
-    exclude_file = exclude_file if exclude_file else getenv('EXCLUSION_FILE')
+    exclude_file = exclude_file if exclude_file else consts.EXCLUSION_FILE
     exclusion_index = read_csv(exclude_file, header=None, index_col=0).index
 
     if debug:
