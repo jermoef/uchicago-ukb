@@ -75,30 +75,30 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
         
         if len(included_cols) > 0:
             usecols = lambda x: x == "eid" or any(field_id in x for field_id in included_cols)
-            with read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid") as reader:
-                is_header = 1
-                mode = 'w'
-                for chunk in reader:
-                    # combine columns with same field value by taking last (rightmost) non-NA value
-                    if combine:
-                        chunk.columns = chunk.columns.str.replace(r'(-\d\.\d)', '')
-                        if combine_op == "first":
-                            chunk = chunk.groupby(level=0, axis=1).first()
-                        else:
-                            chunk = chunk.groupby(level=0, axis=1).last()
-                    
-                    chunk = chunk[~chunk.index.isin(exclusion_index)] # drop excluded samples
-                    # set FID = 0, IID = eid in first two columns, fill NA values with -9
-                    chunk.insert(loc=0, column="IID", value=chunk.index)
-                    chunk.insert(loc=0, column="FID", value=0)
-                    chunk.fillna(value=-9, inplace=True)
-                    if debug:
-                        print("Chunk to be written:\n", chunk)
-                    target_file = path.join(path.abspath(target_dir), '') + output_fname + "/" + output_fname + get_dataset_id(filename) + ".pheno"
-                    chunk.to_csv(target_file, header=is_header, index=False, sep=' ', mode=mode)
-                    print("Wrote ", output_fname + get_dataset_id(filename) + ".pheno")
-                    is_header = 0
-                    mode = 'a'
+            # with read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid") as reader: # <- requires pandas version >=1.2
+            is_header = 1
+            mode = 'w'
+            for chunk in read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid"):
+                # combine columns with same field value by taking last (rightmost) non-NA value
+                if combine:
+                    chunk.columns = chunk.columns.str.replace(r'(-\d\.\d)', '')
+                    if combine_op == "first":
+                        chunk = chunk.groupby(level=0, axis=1).first()
+                    else:
+                        chunk = chunk.groupby(level=0, axis=1).last()
+                
+                chunk = chunk[~chunk.index.isin(exclusion_index)] # drop excluded samples
+                # set FID = 0, IID = eid in first two columns, fill NA values with -9
+                chunk.insert(loc=0, column="IID", value=chunk.index)
+                chunk.insert(loc=0, column="FID", value=0)
+                chunk.fillna(value=-9, inplace=True)
+                if debug:
+                    print("Chunk to be written:\n", chunk)
+                target_file = path.join(path.abspath(target_dir), '') + output_fname + "/" + output_fname + get_dataset_id(filename) + ".pheno"
+                chunk.to_csv(target_file, header=is_header, index=False, sep=' ', mode=mode)
+                print("Wrote ", output_fname + get_dataset_id(filename) + ".pheno")
+                is_header = 0
+                mode = 'a'
 
         ID_list = ID_list.difference(header_names)
         fname_index += 1
