@@ -26,7 +26,7 @@ def dir_path(string):
     else:
         raise argparse.ArgumentTypeError(f"directory: {string} is not a valid directory path")
 
-def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", chunksize=10000, pheno_dir=None, target_dir=".", exclude_file=None, debug=False):
+def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", chunksize=10000, pheno_dir=None, target_dir=".", exclude_file=None, pc_num=0, debug=False):
     """Extract phenotypes from ukb csv and write to plink friendly format
 
     Args:
@@ -51,6 +51,7 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
 
     # map filename to included field IDs
     ID_list = set(ID_list)
+    # TODO: add PCs to ID_list if specified
     fname_index = 0
     # create output dir
     makedirs(path.join(path.abspath(target_dir), '') + output_fname, exist_ok=True)
@@ -78,12 +79,11 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
             for chunk in read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid"):
                 # combine columns with same field value by taking last (rightmost) non-NA value
                 if combine:
-                    chunk.columns = chunk.columns.str.replace(r'(-\d\.\d)', '')
+                    chunk.columns = chunk.columns.str.replace(r'(-\d+\.\d+)', '')
                     if combine_op == "first":
                         chunk = chunk.groupby(level=0, axis=1).first()
                     else:
                         chunk = chunk.groupby(level=0, axis=1).last()
-                
                 chunk = chunk[~chunk.index.isin(exclusion_index)] # drop excluded samples
                 # set FID = 0, IID = eid in first two columns, fill NA values with -9
                 chunk.insert(loc=0, column="IID", value=chunk.index)
@@ -127,9 +127,10 @@ if __name__ == "__main__":
     # TODO: Better help for combine flag
     parser.add_argument("-r", "--rows", help="Number of rows to read in at a time when parsing the csv. Default is 10000.", type=int, default=10000)
     parser.add_argument("-d", "--dir", help="Directory to look for ukb files. Defaults to path in .env file", type=dir_path, action="store")
-    parser.add_argument("-t", "--target", help="Directory to place extracted phenotypes folder. Default is current directory.", type=dir_path, action="store", default=".")
+    parser.add_argument("-t", "--target", help="Directory to place extracted phenotypes folder. Default is current directory.", type=dir_path, default=".")
     parser.add_argument("-e", "--exclude", help="CSV where first column is list of IDs to exclude in the output phenotype files")
     parser.add_argument("-v", "--verbose", help="Print intermediate outputs for debugging", action="store_true", default=False)
+    parser.add_argument("--extract-pcs", nargs="?", type=int, help="Extract the first N pcs in addition to the phenotypes specified. If no N specified, defaults to 10", default=0, const=10)
 
     args = vars(parser.parse_args())
     ID_list = args["fields"]
@@ -141,8 +142,9 @@ if __name__ == "__main__":
     pheno_dir = args["dir"]
     target_dir = args["target"]
     exclude_file = args["exclude"]
+    pc_num = args["extract_pcs"]
 
     print("Extracting phenotypes...")
-    extract_phenotypes(ID_list, output_fname, combine, combine_op, chunksize, pheno_dir, target_dir, exclude_file, debug)
+    extract_phenotypes(ID_list, output_fname, combine, combine_op, chunksize, pheno_dir, target_dir, exclude_file, pc_num, debug)
 
 
