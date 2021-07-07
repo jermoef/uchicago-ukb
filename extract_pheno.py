@@ -135,7 +135,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--target", help="Directory to place extracted phenotypes folder. Default is current directory.", type=dir_path, default=".")
     parser.add_argument("-e", "--exclude", help="CSV where first column is list of IDs to exclude in the output phenotype files")
     parser.add_argument("-v", "--verbose", help="Print intermediate outputs for debugging", action="store_true", default=False)
-    parser.add_argument("--extract-pcs", nargs="?", type=int, help="Extract the first N pcs in addition to the phenotypes specified. If no N specified, defaults to 10", default=0, const=10)
+    parser.add_argument("--extract-pcs", nargs="?", type=int, help="(to be implemented) Extract the first N pcs in addition to the phenotypes specified. If no N specified, defaults to 10", default=0, const=10)
 
     args = vars(parser.parse_args())
     ID_list = args["fields"]

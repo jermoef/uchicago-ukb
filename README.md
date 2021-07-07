@@ -12,12 +12,14 @@ Given a set of IDs, the script will search through a directory for files matchin
 It writes the output into a new directory containing plink formatted phenotype files, with each output file corresponding to one of the UKB dataset files.
 For example, if half of the phenotypes were in `ukb27702.csv` and the other half in `ukb27701.csv`, it would output two corresponding .pheno files.
 
+It will also automatically exclude the samples that have withdrawn from the study in the output file.
+
 Run `python3 extract_pheno.py -h` to see options.
 
 #### Command Line Arguments
 ##### Required:
 - `<ID1> <ID2> etc`: list of space-delimited IDs corresponding to columns in the csv file (`[fieldID]-[instance index].[array index]`)
-    - if only field ID is provided and corresponding columns should be combined, then the `-c/--combine` flag is required (see below).
+    - *if only field ID is provided and corresponding columns should be combined, then the `-c/--combine` flag is required (see below)*.
 - `-n/--name <name>`: output directory name 
 ##### Optional:
 - `-c/--combine (<none/first/last>)`: combine columns with the same field ID. If no argument is given to the flag, default behavior is to take the rightmost (last) non-missing value.
