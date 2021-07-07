@@ -19,7 +19,7 @@ Run `python3 extract_pheno.py -h` to see options.
 #### Command Line Arguments
 ##### Required:
 - `<ID1> <ID2> etc`: list of space-delimited IDs corresponding to columns in the csv file (`[fieldID]-[instance index].[array index]`)
-    - *if only field ID is provided and corresponding columns should be combined, then the `-c/--combine` flag is required (see below)*.
+    - **if only field ID is provided and corresponding columns should be combined, then the `-c/--combine` flag is required (see below)**.
 - `-n/--name <name>`: output directory name 
 ##### Optional:
 - `-c/--combine (<none/first/last>)`: combine columns with the same field ID. If no argument is given to the flag, default behavior is to take the rightmost (last) non-missing value.
@@ -35,5 +35,6 @@ Looks for and outputs files in `./tests/` directory
 - `python3 extract_pheno.py 21 31 34 44 45 50 72 -n comb -c -r 100 -d tests -e tests/test_exclude.csv -t tests`
 - `python3 extract_pheno.py 31-0.0 34-0.0 44-0.0 50-0.0 50-1.0 50-2.0 -n nocomb -r 100 -d tests -e tests/test_exclude.csv -t tests`
 
-#### Possible Errors
-- `AttributeError: __enter__` on `with read_csv...`. Check that your pandas installation is version >= 1.2 (script relies on read_csv w/ chunksize returning a context maanger)
+#### Possible Errors/Exceptions
+- ~~`AttributeError: __enter__` on `with read_csv...`. Check that your pandas installation is version >= 1.2 (script relies on read_csv w/ chunksize returning a context maanger)~~ this should be fixed
+- `Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'> OSError: [Errno 122] Disk quota exceeded`. Comes from using the `-v` flag on the cluster on large datasets; output files should still be fine.
