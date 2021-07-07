@@ -24,8 +24,8 @@ Run `python3 extract_pheno.py -h` to see options.
 ##### Optional:
 - `-c/--combine (<none/first/last>)`: combine columns with the same field ID. If no argument is given to the flag, default behavior is to take the rightmost (last) non-missing value.
     - if the flag is not provided it will default to `none` and requires instance and array indices to be specified in the ID list.
-- `-d/--dir <path/to/ukb/phenotypes>`: specify directory to search for the ukb phenotype CSVs. Defaults to the path in the .env file.
-- `-e/--exclude <path/to/exclude.csv>`: specify csv that contains list of eids to exclude bc participants have withdrawn. Defaults to the path in the .env file.
+- `-d/--dir <path/to/ukb/phenotypes>`: specify directory to search for the ukb phenotype CSVs. Defaults to the path in the consts file.
+- `-e/--exclude <path/to/exclude.csv>`: specify csv that contains list of eids to exclude bc participants have withdrawn. Defaults to the path in the consts file.
 - `-r/--rows <N>`: number of rows of a csv file to read in at a time (in cases where memory is limited). Defaults to 10000.
 - `-t/--target <path/to/output/directory/>`: specify directory to create folder for extracted phenotype files. Defaults to current directory that the command is being issued in.
 - `-v/--verbose`: print intermediate outputs for debugging purposes

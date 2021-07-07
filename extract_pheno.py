@@ -3,7 +3,7 @@ import argparse
 import consts
 from pandas import read_csv
 from glob import glob
-from os import stat, getenv, path, makedirs
+from os import path, makedirs
 from sys import argv, stderr, exit
 
 def get_header(filename, combine):
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         pass
     example_text = " "
 
-    parser = argparse.ArgumentParser(description="Extract phenotypes from directory holding ukb csv files. Change this directory in the .env file", formatter_class=CustomFormatter)
+    parser = argparse.ArgumentParser(description="Extract phenotypes from directory holding ukb csv files. Change default directory in the consts file", formatter_class=CustomFormatter)
     if len(argv)==1:
         parser.print_help(stderr)
         exit(1)
@@ -131,7 +131,7 @@ if __name__ == "__main__":
                         default="none", const="last")
     # TODO: Better help for combine flag
     parser.add_argument("-r", "--rows", help="Number of rows to read in at a time when parsing the csv. Default is 10000.", type=int, default=10000)
-    parser.add_argument("-d", "--dir", help="Directory to look for ukb files. Defaults to path in .env file", type=dir_path, action="store")
+    parser.add_argument("-d", "--dir", help="Directory to look for ukb files. Defaults to path in consts file", type=dir_path, action="store")
     parser.add_argument("-t", "--target", help="Directory to place extracted phenotypes folder. Default is current directory.", type=dir_path, default=".")
     parser.add_argument("-e", "--exclude", help="CSV where first column is list of IDs to exclude in the output phenotype files")
     parser.add_argument("-v", "--verbose", help="Print intermediate outputs for debugging", action="store_true", default=False)
