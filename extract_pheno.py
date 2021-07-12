@@ -92,7 +92,7 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
                 chunk = chunk[~chunk.index.isin(exclusion_index)] # drop excluded samples
                 # set FID = 0, IID = eid in first two columns, fill NA values with -9
                 chunk.insert(loc=0, column="IID", value=chunk.index)
-                chunk.insert(loc=0, column="FID", value=0)
+                chunk.insert(loc=0, column="FID", value=chunk.index)
                 chunk.fillna(value=-9, inplace=True)
                 if debug:
                     print("Chunk to be written:\n", chunk)
