@@ -2,7 +2,7 @@
 
 #PBS -N bgen2pgen
 #PBS -S /bin/bash
-#PBS -l walltime=36:00:00
+#PBS -l walltime=64:00:00
 #PBS -l nodes=1:ppn=28
 #PBS -l mem=16gb
 #PBS -o $HOME/plink_pgen.out
@@ -21,7 +21,7 @@ mkdir plink_genotypes
 
 cd plink_genotypes
 
-env_parallel -j 3 ~/plink2 --bgen /gpfs/data/ukb-share/genotypes/v3/ukb_imp_chr{1}_v3.bgen \
+env_parallel -j 3 ~/plink2 --bgen /gpfs/data/ukb-share/genotypes/v3/ukb_imp_chr{1}_v3.bgen ref-first \
 	 --sample $SAMPLE_FILE \
 	 --export bcf \
 	 --out ukb_imp_chr{1}_v3 \
@@ -36,7 +36,6 @@ done
 ~/bin/bcftools concat -f merge.txt -o ukb_imp_v3.bcf -O b --threads 27
 
 rm ukb_imp_chr*_v3.bcf
-rm merge.txt
 
 ~/plink2 --bcf ukb_imp_v3.bcf \
 	 --make-pgen \
