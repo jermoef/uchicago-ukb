@@ -79,7 +79,7 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
             # with read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid") as reader: # <- requires pandas version >=1.2
             is_header = 1
             mode = 'w'
-            for chunk in read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid"):
+            for chunk in read_csv(filename, usecols=usecols, chunksize=chunksize, dtype=str, index_col="eid", encoding="latin1"):
                 # combine columns with same field value by taking last (rightmost) non-NA value
                 if debug:
                     print("Pre-formatted chunk:\n", chunk)
