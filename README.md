@@ -3,7 +3,7 @@
 - [Phenotype Extraction](#phenotype-extraction)
   * [Command Line Arguments](#command-line-arguments)
   * [Sample Calls](#sample-calls)
-  * [Possible Errors](#possible-errors)
+  * [Possible Errors](#possible-errorsexceptions)
 
 
 ### Phenotype Extraction
@@ -39,7 +39,7 @@ Looks for and outputs files in `./tests/` directory
 - ~~`AttributeError: __enter__` on `with read_csv...`. Check that your pandas installation is version >= 1.2 (script relies on read_csv w/ chunksize returning a context maanger)~~ this should be fixed
 - `Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'> OSError: [Errno 122] Disk quota exceeded`. Comes from using the `-v` flag on the cluster on large datasets; output files should still be fine.
 
-### If running on CRI (as of Dec 2021):
+### If running on CRI using Lmod (as of Dec 2021):
 * install & run in home directory
 
 #### To run as a submission script:
