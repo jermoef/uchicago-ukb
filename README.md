@@ -29,6 +29,7 @@ Run `python3 extract_pheno.py -h` to see options.
 - `-r/--rows <N>`: number of rows of a csv file to read in at a time (in cases where memory is limited). Defaults to 10000.
 - `-t/--target <path/to/output/directory/>`: specify directory to create folder for extracted phenotype files. Defaults to current directory that the command is being issued in.
 - `-v/--verbose`: print intermediate outputs for debugging purposes
+- `--missing-code`: set missing code to be used for NA values in phenotype files (e.g. -9, NA, na). Default NA.
 
 #### Sample Calls
 Looks for and outputs files in `./tests/` directory
