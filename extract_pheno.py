@@ -26,7 +26,7 @@ def dir_path(string):
     else:
         raise argparse.ArgumentTypeError(f"directory: {string} is not a valid directory path")
 
-def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", chunksize=10000, pheno_dir=None, target_dir=".", exclude_file=None, pc_num=0, debug=False):
+def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", chunksize=10000, pheno_dir=None, target_dir=".", exclude_file=None, missing_code='NA', pc_num=0, debug=False):
     """Extract phenotypes from ukb csv and write to plink friendly format
 
     Args:
@@ -93,7 +93,7 @@ def extract_phenotypes(ID_list, output_fname, combine=False, combine_op="last", 
                 # set FID = 0, IID = eid in first two columns, fill NA values with -9
                 chunk.insert(loc=0, column="IID", value=chunk.index)
                 chunk.insert(loc=0, column="FID", value=chunk.index)
-                chunk.fillna(value=-9, inplace=True)
+                chunk.fillna(value=missing_code, inplace=True)
                 if debug:
                     print("Chunk to be written:\n", chunk)
                 target_file = path.join(path.abspath(target_dir), '') + output_fname + "/" + output_fname + get_dataset_id(filename) + ".pheno"
@@ -136,6 +136,7 @@ if __name__ == "__main__":
     parser.add_argument("-e", "--exclude", help="CSV where first column is list of IDs to exclude in the output phenotype files")
     parser.add_argument("-v", "--verbose", help="Print intermediate outputs for debugging", action="store_true", default=False)
     parser.add_argument("--extract-pcs", nargs="?", type=int, help="(to be implemented) Extract the first N pcs in addition to the phenotypes specified. If no N specified, defaults to 10", default=0, const=10)
+    parser.add_argument("--missing-code", nargs="?", help="Missing code to be used for plink input (e.g. -9, na, NA). Default 'NA'.", default='NA', const='NA')
 
     args = vars(parser.parse_args())
     ID_list = args["fields"]
@@ -148,8 +149,9 @@ if __name__ == "__main__":
     target_dir = args["target"]
     exclude_file = args["exclude"]
     pc_num = args["extract_pcs"]
+    missing_code = args["missing_code"]
 
     print("Extracting phenotypes...")
-    extract_phenotypes(ID_list, output_fname, combine, combine_op, chunksize, pheno_dir, target_dir, exclude_file, pc_num, debug)
+    extract_phenotypes(ID_list, output_fname, combine, combine_op, chunksize, pheno_dir, target_dir, exclude_file, missing_code, pc_num, debug)
 
 
